@@ -184,6 +184,14 @@ void loop() {
       strTemp = String(maoControl);
       strTemp.toCharArray(aux,20);
       break;
+    case 41:
+      //eletroima ON
+      ligarEletroima();
+      break;
+    case 42:
+      //eletroima OFF
+      desligarEletroima();
+      break;
     default:
       strcpy(aux, "default");
       break;
