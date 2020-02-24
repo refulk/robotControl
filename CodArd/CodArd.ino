@@ -128,28 +128,12 @@ void loop() {
     case 20:
       //bracoCima      
       strncpy(temp,moveControl+2,2);
-      if(temp == "99") //Se o comando for pelo teclado, tera codigo 99 
-      {
-        if(bracoControl < maxBraco)
-          bracoControl++;
-      }
-      else
-      {
-        bracoControl = 10;
-      }
+      bracoControl = atoi(temp);
       break;
     case 21:
-      //bracobaixo    
+      //bracoBaixo    
       strncpy(temp,moveControl+2,2);
-      if(temp == "99") //Se o comando for pelo teclado, tera codigo 99 
-      {
-        if(bracoControl > 0)
-          bracoControl--;
-      }
-      else
-      {
-        bracoControl = 8;
-      }
+      bracoControl = atoi(temp);
       break;
     default:
       break;
