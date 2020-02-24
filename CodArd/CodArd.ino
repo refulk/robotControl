@@ -5,7 +5,7 @@
 unsigned long millisBracoTest = 0;
 unsigned int delayBracoTest = 2000;
 
-char moveControl[17] = "-default";
+char moveControl[4] = "9999";
 int bracoControl = 13;
 int maoControl = 10;
 
@@ -55,7 +55,7 @@ void messageROS( const std_msgs::String& toggle_msg)
 //    digitalWrite(13, LOW);   // blink the led
 //    delay(5000);
 //  }
-  moveControl[0] = toggle_msg.data[0];
+  moveControl = toggle_msg.data;
 }
 
 /*
@@ -88,36 +88,36 @@ void loop() {
     moveBraco(bracoControl);
     moveMao(maoControl); 
   }
-  
-  switch (moveControl[0]) {
-    case '0':
+  //stringOne.substring(14,18)
+  switch (moveControl.substring(0,2)) {
+    case "00":
       giraHorario();
       break;
-    case '1':
+    case "01":
       giraAntiHorario();
       break;
-    case '2':
+    case "02":
       frente();
       break;
-    case '3':
+    case "03":
       tras();
       break;
-    case '4':
+    case "04":
       esquerda();
       break;
-    case '5':
+    case "05":
       direita();
       break;
-    case '6':
+    case "06":
       dFD();
       break;
-    case '7':
+    case "07":
       dTE();
       break;
-    case '8':
+    case "08":
       dFE();
       break;
-    case '9':
+    case "09":
       dTD();
       break;
     default:
