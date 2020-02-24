@@ -200,7 +200,7 @@ void loop() {
     answerROSmsg(aux);
   if(delayMillisKeep(&millisStop, delayStop)) //Se não receber comando, fica parado
   {
-    moveControl[0] = '-';
+    strcpy(moveControl, "9999");
   }
 }
 

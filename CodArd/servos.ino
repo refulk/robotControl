@@ -53,7 +53,7 @@ int servoQuatro[] = {167, 164, 156, 147, 139, 130, 121, 112, 104, 93, 84, 76, 67
 int servoPos1, servoPos2, servoPos3, servoPos4;
 
 unsigned long millisBraco = 0;
-unsigned int delayBraco = 30;
+unsigned int delayBraco = 5;
 
 unsigned long millisMao = 0;
 unsigned int delayMao = 20;
