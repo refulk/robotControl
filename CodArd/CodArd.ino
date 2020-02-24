@@ -13,6 +13,8 @@ int maoControl = 10;
 
 unsigned long time;
 
+bool responder = false;
+
 //delay parar movimento caso nao exista novo comando
 unsigned long millisStop = 0;
 unsigned int delayStop = 1100;
@@ -43,17 +45,28 @@ void setupROS()
   listener.advertise(answer);  
 }
 
+void answerROSmsg(String msg)
+{
+  str_msg.data = msg;
+  answer.publish( &str_msg );
+  listener.spinOnce();
+  responder = false;
+}
+
 void messageROS( const std_msgs::String& toggle_msg)
 {
+  responder = true;
   millisStop = millis();
   //digitalWrite(13, HIGH-digitalRead(13));   // blink the led
 //  digitalWrite(13, HIGH);   // blink the led
   
 //  if(toggle_msg.data[0] == '9')
 //  {
-    str_msg.data = hello;
-    answer.publish( &str_msg );
-    listener.spinOnce();
+
+    //str_msg.data = hello;
+    //answer.publish( &str_msg );
+    //listener.spinOnce();
+    
 //    digitalWrite(13, LOW);   // blink the led
 //    delay(5000);
 //  }
@@ -102,9 +115,13 @@ void loop() {
       giraAntiHorario();
       break;
     case 2:
+      if(responder)
+        answerROSmsg("frente");
       frente();
       break;
     case 3:
+      if(responder)
+        answerROSmsg("tras");
       tras();
       break;
     case 4:
