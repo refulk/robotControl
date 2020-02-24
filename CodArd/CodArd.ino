@@ -5,6 +5,7 @@
 unsigned long millisBracoTest = 0;
 unsigned int delayBracoTest = 2000;
 
+char temp[3] = "99";
 char comando[3] = "99";
 char moveControl[5] = "9999";
 int bracoControl = 13;
@@ -93,9 +94,6 @@ void loop() {
   }
   //stringOne.substring(14,18)
   strncpy(comando,moveControl,2);  
-  //Serial.print("COMANDO: ");
-  //Serial.println(comando);
-  //Serial.println(atoi(comando));
   switch (atoi(comando)) {
     case 0:
       giraHorario();
@@ -126,6 +124,32 @@ void loop() {
       break;
     case 9:
       dTD();
+      break;
+    case 20:
+      //bracoCima      
+      strncpy(temp,moveControl+2,2);
+      if(temp == "99") //Se o comando for pelo teclado, tera codigo 99 
+      {
+        if(bracoControl < maxBraco)
+          bracoControl++;
+      }
+      else
+      {
+        bracoControl = 10;
+      }
+      break;
+    case 21:
+      //bracobaixo    
+      strncpy(temp,moveControl+2,2);
+      if(temp == "99") //Se o comando for pelo teclado, tera codigo 99 
+      {
+        if(bracoControl > 0)
+          bracoControl--;
+      }
+      else
+      {
+        bracoControl = 8;
+      }
       break;
     default:
       break;
