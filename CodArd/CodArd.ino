@@ -102,11 +102,11 @@ void setup() {
 void loop() {
   listener.spinOnce();
 
-  if(delayMillis(&millisBracoMao, delayBracoMao)) //Comanda braco e mao a cada intervalo de tempo
-  {
+  //if(delayMillis(&millisBracoMao, delayBracoMao)) //Comanda braco e mao a cada intervalo de tempo
+  //{
     moveBraco(bracoControl);
     moveMao(maoControl); 
-  }
+  //}
   //stringOne.substring(14,18)
   strncpy(comando,moveControl,2);  
   switch (atoi(comando)) {
@@ -150,20 +150,38 @@ void loop() {
       strcpy(aux, "frente");
       dTD();
       break;
-    case 20:
+    case 21:
       //bracoCima 
       strcpy(aux, "bracoCima");     
       strncpy(temp,moveControl+2,2);
       bracoControl = atoi(temp);
+      //bracoControl = 10;
       strTemp = String(bracoControl);
       strTemp.toCharArray(aux,20);
       break;
-    case 21:
+    case 22:
       //bracoBaixo 
       strcpy(aux, "bracoBaixo");   
       strncpy(temp,moveControl+2,2);
       bracoControl = atoi(temp);
+      //bracoControl = 3;
       strTemp = String(bracoControl);
+      strTemp.toCharArray(aux,20);
+      break;
+    case 31:
+      //maoCima 
+      strcpy(aux, "maoCima");     
+      strncpy(temp,moveControl+2,2);
+      maoControl = atoi(temp);
+      strTemp = String(maoControl);
+      strTemp.toCharArray(aux,20);
+      break;
+    case 32:
+      //maoBaixo 
+      strcpy(aux, "maoBaixo");   
+      strncpy(temp,moveControl+2,2);
+      maoControl = atoi(temp);
+      strTemp = String(maoControl);
       strTemp.toCharArray(aux,20);
       break;
     default:
