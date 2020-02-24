@@ -5,7 +5,7 @@
 unsigned long millisBracoTest = 0;
 unsigned int delayBracoTest = 2000;
 
-char aux[10] = "";
+char aux[20] = "";
 char temp[3] = "99";
 char comando[3] = "99";
 char moveControl[5] = "9999";
@@ -110,9 +110,11 @@ void loop() {
   strncpy(comando,moveControl,2);  
   switch (atoi(comando)) {
     case 0:
+      strcpy(aux, "giraHorario");
       giraHorario();
       break;
     case 1:
+      strcpy(aux, "giraAntiHorario");
       giraAntiHorario();
       break;
     case 2:
@@ -124,34 +126,43 @@ void loop() {
       tras();
       break;
     case 4:
+      strcpy(aux, "esquerda");
       esquerda();
       break;
     case 5:
+      strcpy(aux, "direita");
       direita();
       break;
     case 6:
+      strcpy(aux, "dFD");
       dFD();
       break;
     case 7:
+      strcpy(aux, "dTE");
       dTE();
       break;
     case 8:
+      strcpy(aux, "dFE");
       dFE();
       break;
     case 9:
+      strcpy(aux, "frente");
       dTD();
       break;
     case 20:
-      //bracoCima      
+      //bracoCima 
+      strcpy(aux, "bracoCima");     
       strncpy(temp,moveControl+2,2);
       bracoControl = atoi(temp);
       break;
     case 21:
-      //bracoBaixo    
+      //bracoBaixo 
+      strcpy(aux, "bracoBaixo");   
       strncpy(temp,moveControl+2,2);
       bracoControl = atoi(temp);
       break;
     default:
+      strcpy(aux, "default");
       break;
   }  
   if(responder)
