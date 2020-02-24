@@ -79,6 +79,8 @@ void setup() {
   setupUltrasonic();
   setupPressao();
   setupROS();
+  Serial.begin(9600); 
+  Serial.println("--- Start Serial Monitor SEND_RCVE ---");
 }
 
 void loop() {
@@ -90,7 +92,10 @@ void loop() {
     moveMao(maoControl); 
   }
   //stringOne.substring(14,18)
-  strncpy(comando,moveControl,2);
+  strncpy(comando,moveControl,2);  
+  Serial.print("COMANDO: ");
+  Serial.println(comando);
+  Serial.println(atoi(comando));
   switch (atoi(comando)) {
     case 0:
       giraHorario();
