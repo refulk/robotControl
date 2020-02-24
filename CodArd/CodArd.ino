@@ -5,6 +5,7 @@
 unsigned long millisBracoTest = 0;
 unsigned int delayBracoTest = 2000;
 
+String strTemp;
 char aux[20] = "";
 char temp[3] = "99";
 char comando[3] = "99";
@@ -154,12 +155,16 @@ void loop() {
       strcpy(aux, "bracoCima");     
       strncpy(temp,moveControl+2,2);
       bracoControl = atoi(temp);
+      strTemp = String(bracoControl);
+      strTemp.toCharArray(aux,20);
       break;
     case 21:
       //bracoBaixo 
       strcpy(aux, "bracoBaixo");   
       strncpy(temp,moveControl+2,2);
       bracoControl = atoi(temp);
+      strTemp = String(bracoControl);
+      strTemp.toCharArray(aux,20);
       break;
     default:
       strcpy(aux, "default");
