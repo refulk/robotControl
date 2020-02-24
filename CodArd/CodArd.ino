@@ -11,8 +11,14 @@ int maoControl = 10;
 
 unsigned long time;
 
+//delay parar movimento caso nao exista novo comando
 unsigned long millisStop = 0;
 unsigned int delayStop = 2000;
+
+//delay para controlar braco e mao
+unsigned long millisBracoMao = 0;
+unsigned int delayBracoMao = 500;
+
 ////////////////////////////////////////////////////
 #include <ros.h>
 #include <std_msgs/String.h>
@@ -39,28 +45,18 @@ void messageROS( const std_msgs::String& toggle_msg)
 {
   millisStop = millis();
   //digitalWrite(13, HIGH-digitalRead(13));   // blink the led
-  digitalWrite(13, HIGH);   // blink the led
+//  digitalWrite(13, HIGH);   // blink the led
   
-  if(toggle_msg.data[0] == '9')
-  {
+//  if(toggle_msg.data[0] == '9')
+//  {
     str_msg.data = hello;
     answer.publish( &str_msg );
     listener.spinOnce();
-    digitalWrite(13, LOW);   // blink the led
-    delay(5000);
-  }
+//    digitalWrite(13, LOW);   // blink the led
+//    delay(5000);
+//  }
   moveControl[0] = toggle_msg.data[0];
 }
-////////////////////////////////////////////////////
-
-//unsigned long time1 = millis();
-//unsigned long time2 = time1 + 800;
-
-//unsigned long microsRead1 = 0;
-//unsigned long delayRead1 = 1000000;
-
-//boolean bracoAumentar = false;
-//boolean MaoAumentar = false;
 
 /*
 0giraHorario
@@ -87,21 +83,12 @@ void setup() {
 void loop() {
   listener.spinOnce();
 
+  if(delayMillis(&millisBracoMao, delayBracoMao)) //Comanda braco e mao a cada intervalo de tempo
+  {
+    moveBraco(bracoControl);
+    moveMao(maoControl); 
+  }
   
-//  loopUltrasonic();
-//  loopPressao();
-  
-//  testBracoMao();
-//  testLocomover();   
-//  if(delayMillis(&millisBracoTest, delayBracoTest))
-//  {
-//    if(freeWay())
-//      strcpy(moveControl, "2frente");
-//    else
-//      strcpy(moveControl, "-default"); 
-//  }
-  moveBraco(bracoControl);
-  moveMao(maoControl); 
   switch (moveControl[0]) {
     case '0':
       giraHorario();
