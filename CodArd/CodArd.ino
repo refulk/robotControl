@@ -14,7 +14,7 @@ unsigned long time;
 
 //delay parar movimento caso nao exista novo comando
 unsigned long millisStop = 0;
-unsigned int delayStop = 2000;
+unsigned int delayStop = 1000;
 
 //delay para controlar braco e mao
 unsigned long millisBracoMao = 0;
