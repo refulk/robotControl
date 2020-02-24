@@ -5,6 +5,7 @@
 unsigned long millisBracoTest = 0;
 unsigned int delayBracoTest = 2000;
 
+char aux[10] = "";
 char temp[3] = "99";
 char comando[3] = "99";
 char moveControl[5] = "9999";
@@ -45,9 +46,9 @@ void setupROS()
   listener.advertise(answer);  
 }
 
-void answerROSmsg(String msg)
+void answerROSmsg(char msg[10])
 {
-  str_msg.data = msg;
+  str_msg.data= msg;
   answer.publish( &str_msg );
   listener.spinOnce();
   responder = false;
@@ -115,13 +116,11 @@ void loop() {
       giraAntiHorario();
       break;
     case 2:
-      if(responder)
-        answerROSmsg("frente");
+      strcpy(aux, "frente");
       frente();
       break;
     case 3:
-      if(responder)
-        answerROSmsg("tras");
+      strcpy(aux, "tras");
       tras();
       break;
     case 4:
@@ -154,8 +153,9 @@ void loop() {
       break;
     default:
       break;
-  }
-  
+  }  
+  if(responder)
+    answerROSmsg(aux);
   if(delayMillisKeep(&millisStop, delayStop)) //Se não receber comando, fica parado
   {
     moveControl[0] = '-';
