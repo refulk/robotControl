@@ -83,6 +83,7 @@ void moveBraco(int pos)
   if(
   (servoPos1 != servoUm[pos] || servoPos2 != servoDois[pos])
   && delayMillis(&millisBraco, delayBraco)
+  && pos >= 0 && pos <= 13
   )
   {
     if(servoPos1 > servoUm[pos])
@@ -117,6 +118,7 @@ void moveMao(int pos)
   if(
   (servoPos3 != servoTres[pos] || servoPos4 != servoQuatro[pos])
   && delayMillis(&millisMao, delayMao)
+  && pos >= 0 && pos <= 18
   )
   {
     if(servoPos3 > servoTres[pos])
