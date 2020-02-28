@@ -45,8 +45,9 @@ Servo myservo4;
 // twelve servo objects can be created on most boards
 
 //int pos = 0;    // variable to store the servo position
-int servoUm[] = {5, 15, 23, 31, 39, 48, 56, 66, 75, 85, 94, 104, 115, 123};
-int servoDois[] = {151, 141, 134, 126, 118, 110, 102, 94, 86, 77, 69, 60, 51, 43};
+//int servoUm[] = {5, 15, 23, 31, 39, 48, 56, 66, 75, 85, 94, 104, 115, 123}; //direito braco
+int servoUm[] = {5, 15, 20, 31, 39, 48, 56, 66, 75, 85, 94, 104, 115, 120}; //direito braco
+int servoDois[] = {151, 141, 134, 126, 118, 110, 102, 94, 86, 77, 69, 60, 51, 43}; //esquerdo braco
 int servoTres[] = {9, 14, 20, 29, 36, 45, 54, 63, 71, 81, 90, 99, 108, 116, 125, 133, 141, 149, 163};
 //int servoTres[] = {8, 10, 16, 24, 32, 40, 48, 57, 65, 72, 83, 92, 101, 111, 120, 128, 137, 145, 154};
 int servoQuatro[] = {167, 164, 156, 147, 139, 130, 121, 112, 104, 93, 84, 76, 67, 58, 49, 41, 33, 26, 16};
@@ -101,14 +102,16 @@ void moveBraco(int pos)
     {
       servoPos2++;
     }
-    myservo1.write(servoPos1);
+    
     myservo2.write(servoPos2);
+    myservo1.write(servoPos1);
   }
 }
 
 //posicao vai de 0 ate 18
 void moveMao(int pos)
 {
+  pos = 18 - pos;
   //myservo3.write(servoTres[pos]);
   //myservo4.write(servoQuatro[pos]); 
   if(

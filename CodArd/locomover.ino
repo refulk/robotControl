@@ -81,6 +81,12 @@ void setupLocomover() {
   digitalWrite(Q_DIR_PIN    , LOW);  
 }
 
+void set_delayPasso(unsigned long novoValor)
+{
+  novoValor = 100 - novoValor;
+  delayPasso = novoValor * novoValor;
+}
+
 void locomover(boolean m1, boolean m2, boolean m3, boolean m4) //locomover funcao
 {  
   if(delayMicros(&microsPasso, delayPasso))

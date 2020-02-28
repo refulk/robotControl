@@ -1,29 +1,18 @@
 
-#define maxBraco 13
-#define maxMao 18
-
-unsigned long millisBracoTest = 0;
-unsigned int delayBracoTest = 2000;
-
-String strTemp;
-char aux[20] = "";
-char temp[3] = "99";
-char comando[3] = "99";
 char moveControl[5] = "9999";
+char comando[3] = "99";
 int bracoControl = 13;
 int maoControl = 10;
 
-unsigned long time;
+char tempValor[3] = "99";
+int valorComando = 0;
+char aux[20] = "";
 
 bool responder = false;
 
 //delay parar movimento caso nao exista novo comando
 unsigned long millisStop = 0;
 unsigned int delayStop = 1100;
-
-//delay para controlar braco e mao
-unsigned long millisBracoMao = 0;
-unsigned int delayBracoMao = 500;
 
 ////////////////////////////////////////////////////
 #include <ros.h>
@@ -102,13 +91,14 @@ void setup() {
 void loop() {
   listener.spinOnce();
 
-  //if(delayMillis(&millisBracoMao, delayBracoMao)) //Comanda braco e mao a cada intervalo de tempo
-  //{
-    moveBraco(bracoControl);
-    moveMao(maoControl); 
-  //}
-  //stringOne.substring(14,18)
-  strncpy(comando,moveControl,2);  
+  moveBraco(bracoControl);
+  moveMao(maoControl); 
+  
+  strncpy(comando,moveControl,2); //copia os 2 primeiros caracteres de 'moveControl' para 'comando'
+  strncpy(tempValor,moveControl+2,2); //copia os 2 ultimos caracteres de 'moveControl' para 'tempValor'
+  valorComando = atoi(tempValor); //converte de vetor de caracteres para inteiro
+  set_delayPasso(valorComando); //atualiza delay (velocidade)
+  
   switch (atoi(comando)) {
     case 0:
       strcpy(aux, "giraHorario");
@@ -153,36 +143,22 @@ void loop() {
     case 21:
       //bracoCima 
       strcpy(aux, "bracoCima");     
-      strncpy(temp,moveControl+2,2);
-      bracoControl = atoi(temp);
-      //bracoControl = 10;
-      strTemp = String(bracoControl);
-      strTemp.toCharArray(aux,20);
+      bracoControl = valorComando;
       break;
     case 22:
       //bracoBaixo 
       strcpy(aux, "bracoBaixo");   
-      strncpy(temp,moveControl+2,2);
-      bracoControl = atoi(temp);
-      //bracoControl = 3;
-      strTemp = String(bracoControl);
-      strTemp.toCharArray(aux,20);
+      bracoControl = valorComando;
       break;
     case 31:
       //maoCima 
       strcpy(aux, "maoCima");     
-      strncpy(temp,moveControl+2,2);
-      maoControl = atoi(temp);
-      strTemp = String(maoControl);
-      strTemp.toCharArray(aux,20);
+      maoControl = valorComando;
       break;
     case 32:
       //maoBaixo 
       strcpy(aux, "maoBaixo");   
-      strncpy(temp,moveControl+2,2);
-      maoControl = atoi(temp);
-      strTemp = String(maoControl);
-      strTemp.toCharArray(aux,20);
+      maoControl = valorComando;
       break;
     case 41:
       //eletroima ON
@@ -196,106 +172,16 @@ void loop() {
       strcpy(aux, "default");
       break;
   }  
+
+  //Responde utilizando o no 'answer' o texto escrito em aux
+  // no futuro o no answer deve retornar apenas quando for detectados obstaculos
+  // pelo sensor de proximidade.
+  // se necessario, na mensagem enviar se o obstaculo esta a frente, tras, direita, esquerda
   if(responder)
     answerROSmsg(aux);
+    
   if(delayMillisKeep(&millisStop, delayStop)) //Se não receber comando, fica parado
   {
     strcpy(moveControl, "9999");
   }
 }
-
-
-
-
-
-
-/*
-//utilizado para teste apenas
-// movimenta o braco e a mao em todas as POSICOES possiveis
-void testBracoMao()
-{
-  if(delayMillis(&millisBracoTest, delayBracoTest))
-  {
-    if(bracoAumentar)
-    {
-      if(bracoControl < maxBraco)
-        bracoControl++;
-      if(bracoControl >= maxBraco) //nunca deve ser maior
-        bracoAumentar = false;
-    }
-    else
-    {
-      if(bracoControl > 0)
-        bracoControl--;
-      if(bracoControl <= 0) //nunca deve ser menor
-        bracoAumentar = true;      
-    }
-    
-    if(MaoAumentar)
-    {
-      if(maoControl < maxMao)
-        maoControl++;
-      if(maoControl >= maxMao) //nunca deve ser maior
-        MaoAumentar = false;      
-    }
-    else
-    {
-      if(maoControl > 0)
-        maoControl--;
-      if(maoControl <= 0) //nunca deve ser menor
-        MaoAumentar = true;  
-    }      
-  }
-}
-
-//utilizado para teste apenas
-// locomove o carrinho em todas as DIRECOES possiveis
-void testLocomover()
-{
-  if(millis() < 1000 * 2)
-  {      
-      strcpy(moveControl, "0giraHorario");
-  }
-  else if(millis() < 2000 * 2)
-  {
-      strcpy(moveControl, "1giraAntiHorario");
-  }
-  else if(millis() < 3000 * 2)
-  {
-      strcpy(moveControl, "2frente");
-  }
-  else if(millis() < 4000 * 2)
-  {
-      strcpy(moveControl, "3tras");
-  }
-  else if(millis() < 5000 * 2)
-  {
-      strcpy(moveControl, "4esquerda");
-  }
-  else if(millis() < 6000 * 2)
-  {
-      strcpy(moveControl, "5direita");
-  }
-  else if(millis() < 7000 * 2)
-  {
-      strcpy(moveControl, "6dFD");
-  }
-  else if(millis() < 8000 * 2)
-  {
-      strcpy(moveControl, "7dTE");
-  }
-  else if(millis() < 9000 * 2)
-  {
-      strcpy(moveControl, "8dFE");
-  }
-  else if(millis() < 10000 * 2)
-  {
-      strcpy(moveControl, "9dTD");
-  }
-  else
-  {
-      strcpy(moveControl, "-default");
-  }
-  
-}
-*/
