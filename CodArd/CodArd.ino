@@ -14,7 +14,7 @@ bool responder = false;
 unsigned long millisStop = 0;
 unsigned int delayStop = 200;
 
-/////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
 #include <ros.h>
 #include <std_msgs/String.h>
 
