@@ -12,7 +12,7 @@ bool responder = false;
 
 //delay parar movimento caso nao exista novo comando
 unsigned long millisStop = 0;
-unsigned int delayStop = 1100;
+unsigned int delayStop = 200;
 
 ////////////////////////////////////////////////////
 #include <ros.h>
@@ -84,6 +84,7 @@ void setup() {
   setupUltrasonic();
   setupPressao();
   setupROS();
+  //amaciarMotor();
   //Serial.begin(9600); 
   //Serial.println("--- Start Serial Monitor SEND_RCVE ---");
 }

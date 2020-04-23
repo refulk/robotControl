@@ -45,8 +45,8 @@ Servo myservo4;
 // twelve servo objects can be created on most boards
 
 //int pos = 0;    // variable to store the servo position
-//int servoUm[] = {5, 15, 23, 31, 39, 48, 56, 66, 75, 85, 94, 104, 115, 123}; //direito braco
-int servoUm[] = {5, 15, 20, 31, 39, 48, 56, 66, 75, 85, 94, 104, 115, 120}; //direito braco
+int servoUm[] = {7, 17, 25, 33, 41, 50, 58, 68, 77, 87, 96, 106, 117, 125}; //direito braco
+//int servoUm[] = {5, 15, 20, 31, 39, 48, 56, 66, 75, 85, 94, 104, 115, 120}; //direito braco
 int servoDois[] = {151, 141, 134, 126, 118, 110, 102, 94, 86, 77, 69, 60, 51, 43}; //esquerdo braco
 int servoTres[] = {9, 14, 20, 29, 36, 45, 54, 63, 71, 81, 90, 99, 108, 116, 125, 133, 141, 149, 163};
 //int servoTres[] = {8, 10, 16, 24, 32, 40, 48, 57, 65, 72, 83, 92, 101, 111, 120, 128, 137, 145, 154};
@@ -54,17 +54,30 @@ int servoQuatro[] = {167, 164, 156, 147, 139, 130, 121, 112, 104, 93, 84, 76, 67
 int servoPos1, servoPos2, servoPos3, servoPos4;
 
 unsigned long millisBraco = 0;
-unsigned int delayBraco = 5;
+unsigned int delayBraco = 10;
 
 unsigned long millisMao = 0;
-unsigned int delayMao = 20;
+unsigned int delayMao = 10;
+
+unsigned long millisTemp1 = 0;
+unsigned int delayTemp1 = 4000;
+unsigned long millisTemp2 = 0;
+unsigned int delayTemp2 = 8000;
+int bracoTemp = 0;
+int maoTemp = 0;
 
 void setupServos() {
 //  setupLocomover();
-  myservo1.attach(11); // Servo1 (mais proximo dos 5V)
-  myservo2.attach(6); // Servo2
-  myservo3.attach(5); // Servo3
-  myservo4.attach(4); // Servo4 ( mais proximo da escrita servo)
+  myservo1.attach(5); // Servo1 (mais proximo dos 5V)
+  myservo2.attach(4); // Servo2
+  myservo3.attach(6); // Servo3
+  myservo4.attach(11); // Servo4 ( mais proximo da escrita servo)
+  
+  //myservo1.attach(11); // Servo1 (mais proximo dos 5V)
+  //myservo2.attach(6); // Servo2
+  //myservo3.attach(5); // Servo3
+  //myservo4.attach(4); // Servo4 ( mais proximo da escrita servo)
+  
   servoPos1 = servoUm[13];
   servoPos2 = servoDois[13];
   servoPos3 = servoTres[10];
@@ -104,8 +117,10 @@ void moveBraco(int pos)
       servoPos2++;
     }
     
-    myservo2.write(servoPos2);
-    myservo1.write(servoPos1);
+    myservo1.write(servoPos1); // Braco
+    myservo3.write(servoPos3); // Mao
+    myservo4.write(servoPos4); // Mao
+    myservo2.write(servoPos2); // Braco
   }
 }
 
@@ -138,7 +153,54 @@ void moveMao(int pos)
     {
       servoPos4++;
     }  
-    myservo3.write(servoPos3);
-    myservo4.write(servoPos4);     
+    myservo3.write(servoPos3); // Mao
+    myservo4.write(servoPos4); // Mao 
+    myservo1.write(servoPos1); // Braco
+    myservo2.write(servoPos2); // Braco   
   }  
+}
+
+void amaciarMotor()
+{
+  while(true)
+  {
+    if(delayMillis(&millisTemp2, delayTemp2))
+    {
+      if(bracoTemp == 0) 
+      {     
+        bracoTemp = 13;
+        maoTemp = 1;
+      }
+      else
+      {        
+        bracoTemp = 0;
+        maoTemp = 17;
+      }
+    }
+    if(delayMillis(&millisTemp1, delayTemp1))
+    {
+      if(maoTemp == 0 || maoTemp == 1)      
+        maoTemp = 18;
+      else
+        maoTemp = 0;
+      delayTemp1 = 8000;
+    }
+    moveBraco(bracoTemp);
+    moveMao(maoTemp);
+    
+    /*
+    myservo1.write(0);
+    myservo2.write(0);
+    delay(2000);
+    myservo3.write(0);
+    myservo4.write(0); 
+    delay(2000);
+    myservo1.write(180);
+    myservo2.write(180);
+    delay(2000);
+    myservo3.write(180);
+    myservo4.write(180); 
+    delay(2000); 
+    */    
+  } 
 }
