@@ -90,6 +90,14 @@ void setup() {
 }
 
 void loop() {
+  if(detectarObstaculo() == 0)
+  {
+    //maoControl = 13;
+  }
+  else
+  {
+    //maoControl = 10;   
+  }
   listener.spinOnce();
 
   moveBraco(bracoControl);
