@@ -7,12 +7,21 @@ int maoControl = 10;
 char tempValor[3] = "99";
 int valorComando = 0;
 char aux[20] = "";
+char obstaculo[10] = "";
 
 bool responder = false;
 
 //delay parar movimento caso nao exista novo comando
 unsigned long millisStop = 0;
 unsigned int delayStop = 200;
+
+//delay checar sensor ultrassonico
+unsigned long millisUltraS = 0;
+unsigned int delayUltraS = 400;
+
+//delay de 10 segundos para verificar se o obstaculo eh fixo
+unsigned long millisObstaculo = 0;
+unsigned int delayObstaculo = 3000;
 
 /////////////////////////////////////////////////////
 #include <ros.h>
@@ -89,15 +98,40 @@ void setup() {
   //Serial.println("--- Start Serial Monitor SEND_RCVE ---");
 }
 
-void loop() {
-  if(detectarObstaculo() == 0)
-  {
+boolean checarObstaculo(int direcao)
+{
+  if(delayMillis(&millisUltraS, delayUltraS))
+    detectarObstaculo(obstaculo, direcao);
+    //obstaculo[0] = detectarObstaculo(direcao);
+  //answerROSmsg(obstaculo);
+  //if(obstaculo[0] != '0' && maoControl == 10)
+  if(obstaculo[0] != '0')
+  { 
     //maoControl = 13;
+    if(millisObstaculo == 0)
+    {
+      millisObstaculo = millis();
+    }
+    else
+    {
+      if(delayMillisKeep(&millisObstaculo, delayObstaculo)) //aguarda delayObstaculo segundos
+      {
+        millisObstaculo = 0;
+        answerROSmsg(obstaculo);
+      }      
+    }
+    return false;
   }
   else
   {
-    //maoControl = 10;   
+    //maoControl = 10;
+    millisObstaculo = 0;
+    return true;
   }
+}
+
+void loop() {  
+  //checarObstaculo(0);
   listener.spinOnce();
 
   moveBraco(bracoControl);
@@ -119,19 +153,23 @@ void loop() {
       break;
     case 2:
       strcpy(aux, "frente");
-      frente();
+      if(checarObstaculo(0))
+        frente();
       break;
     case 3:
       strcpy(aux, "tras");
-      tras();
+      if(checarObstaculo(2))
+        tras();
       break;
     case 4:
       strcpy(aux, "esquerda");
-      esquerda();
+      if(checarObstaculo(3))
+        esquerda();
       break;
     case 5:
       strcpy(aux, "direita");
-      direita();
+      if(checarObstaculo(1))
+        direita();
       break;
     case 6:
       strcpy(aux, "dFD");
@@ -186,8 +224,8 @@ void loop() {
   // no futuro o no answer deve retornar apenas quando for detectados obstaculos
   // pelo sensor de proximidade.
   // se necessario, na mensagem enviar se o obstaculo esta a frente, tras, direita, esquerda
-  if(responder)
-    answerROSmsg(aux);
+  //if(responder)
+  //  answerROSmsg(aux);
     
   if(delayMillisKeep(&millisStop, delayStop)) //Se não receber comando, fica parado
   {
