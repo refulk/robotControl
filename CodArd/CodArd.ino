@@ -1,5 +1,5 @@
 
-char moveControl[5] = "9999";
+char moveControl[9] = "99999999";
 char comando[3] = "99";
 int bracoControl = 13;
 int maoControl = 10;
@@ -8,6 +8,10 @@ char tempValor[3] = "99";
 int valorComando = 0;
 char aux[20] = "";
 char obstaculo[10] = "";
+
+char curvaComando[3] = "99";
+int curvaComandoInt = 99;
+char curvaVel[3] = "99";
 
 bool responder = false;
 
@@ -134,13 +138,31 @@ void loop() {
   //checarObstaculo(0);
   listener.spinOnce();
 
+//  if(atoi(curvaComando) == 99)
+//    maoControl = 13;
+//  else
+//    maoControl = 10;
+
   moveBraco(bracoControl);
   moveMao(maoControl); 
   
   strncpy(comando,moveControl,2); //copia os 2 primeiros caracteres de 'moveControl' para 'comando'
-  strncpy(tempValor,moveControl+2,2); //copia os 2 ultimos caracteres de 'moveControl' para 'tempValor'
+  strncpy(tempValor,moveControl+2,2); //copia os 2 caracteres do meio de 'moveControl' para 'tempValor'
+  strncpy(curvaComando,moveControl+4,2); //copia os 2 ultimos caracteres de 'moveControl' para 'curvaComando'
+  curvaComandoInt = atoi(curvaComando);
+  if(curvaComandoInt != 99)
+  {
+    strncpy(curvaVel,moveControl+6,2);    
+  }    
+  else
+  {
+    strcpy(curvaVel,"99");
+  }
   valorComando = atoi(tempValor); //converte de vetor de caracteres para inteiro
   set_delayPasso(valorComando); //atualiza delay (velocidade)
+
+//  if(responder)
+//    answerROSmsg(curvaVel);
   
   switch (atoi(comando)) {
     case 0:
@@ -154,22 +176,22 @@ void loop() {
     case 2:
       strcpy(aux, "frente");
       if(checarObstaculo(0))
-        frente();
+        frente(curvaComandoInt, atoi(curvaVel));
       break;
     case 3:
       strcpy(aux, "tras");
       if(checarObstaculo(2))
-        tras();
+        tras(curvaComandoInt, atoi(curvaVel));
       break;
     case 4:
       strcpy(aux, "esquerda");
       if(checarObstaculo(3))
-        esquerda();
+        esquerda(curvaComandoInt, atoi(curvaVel));
       break;
     case 5:
       strcpy(aux, "direita");
       if(checarObstaculo(1))
-        direita();
+        direita(curvaComandoInt, atoi(curvaVel));
       break;
     case 6:
       strcpy(aux, "dFD");
@@ -229,6 +251,6 @@ void loop() {
     
   if(delayMillisKeep(&millisStop, delayStop)) //Se não receber comando, fica parado
   {
-    strcpy(moveControl, "9999");
+    strcpy(moveControl, "99999999");
   }
 }
